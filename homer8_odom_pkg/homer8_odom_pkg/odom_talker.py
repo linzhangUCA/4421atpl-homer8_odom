@@ -14,16 +14,16 @@ class Homer8OdomNode(Node):
         super().__init__("homer8_odom_talker_node")
         # Init serial port
         self.pico_messenger = Serial("/dev/ttyACM0", 115200)
-        self.pico_interact_timer = self.create_timer(0.02, self.talk_listen_pico)
+        self.pico_interact_timer = self.create_timer(0.05, self.talk_listen_pico)
         self.real_lin_vel = 0.0
         self.real_ang_vel = 0.0
-        # Init \cmd_vel subscriber
-        self.target_vel_subscriber = self.create_subscription(
-            topic="cmd_vel",
-            msg_type=Twist,
-            callback=self.send_pico_target_vel,
-            qos_profile=1,
-        )
+        # # Init \cmd_vel subscriber
+        # self.target_vel_subscriber = self.create_subscription(
+        #     topic="cmd_vel",
+        #     msg_type=Twist,
+        #     callback=self.send_pico_target_vel,
+        #     qos_profile=1,
+        # )
         ### START CODEING HERE ### ~? lines
         # Init \odom publisher and tf broadcaster `odom` -> `base_link`
         self.odom_publisher = self.create_publisher(
@@ -40,9 +40,27 @@ class Homer8OdomNode(Node):
         self.th = 0.0
         self.prev_ts = self.get_clock().now()
         self.curr_ts = self.get_clock().now()
+        self.circle_counter = 0
+        self.reverse_circle = False
         self.get_logger().info("HomeR is awaken.")
 
     def talk_listen_pico(self):
+        # Talk target velocity to pico
+        if self.circle_counter <= 80:
+            targ_lin_vel = pi / 8
+            targ_ang_vel = -pi / 2
+        elif 80 < self.circle_counter <= 160:
+            targ_lin_vel = pi / 4
+            targ_ang_vel = pi / 2
+        else:
+            targ_lin_vel = 0.0
+            targ_ang_vel = 0.0
+        self.pico_messenger.write(f"{targ_lin_vel},{targ_ang_vel}\n".encode("utf-8"))
+        self.circle_counter += 1
+        self.get_logger().info(
+            f"target velocity set \n---\nlinear: {targ_lin_vel}, angular: {targ_ang_vel}"
+        )
+        # Listen real velocity from pico
         if self.pico_messenger.inWaiting() > 0:
             real_vels = (
                 self.pico_messenger.readline().decode("utf-8").rstrip().split(",")
@@ -56,13 +74,13 @@ class Homer8OdomNode(Node):
             else:
                 self.get_logger().warn("Pico message decoding ABNORMAL!")
 
-    def send_pico_target_vel(self, cmd_vel_msg):
-        targ_linv = cmd_vel_msg.linear.x
-        targ_angv = cmd_vel_msg.angular.z
-        self.pico_messenger.write(f"{targ_linv},{targ_angv}\n".encode("utf-8"))
-        self.get_logger().info(
-            f"target velocity set \n---\nlinear: {targ_linv}, angular: {targ_angv}"
-        )
+    # def send_pico_target_vel(self, cmd_vel_msg):
+    #     targ_linv = cmd_vel_msg.linear.x
+    #     targ_angv = cmd_vel_msg.angular.z
+    #     self.pico_messenger.write(f"{targ_linv},{targ_angv}\n".encode("utf-8"))
+    #     self.get_logger().info(
+    #         f"target velocity set \n---\nlinear: {targ_linv}, angular: {targ_angv}"
+    #     )
 
     def announce_odometry(self):
         # Calculate time and pose change
