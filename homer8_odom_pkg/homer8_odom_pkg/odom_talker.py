@@ -50,9 +50,9 @@ class Homer8OdomNode(Node):
             targ_lin_vel = pi / 8
             targ_ang_vel = -pi / 2
         elif 80 < self.circle_counter <= 160:
-            targ_lin_vel = pi / 4
+            targ_lin_vel = pi / 7
             targ_ang_vel = pi / 2
-        else:
+        elif self.circle_counter > 160:
             targ_lin_vel = 0.0
             targ_ang_vel = 0.0
         self.pico_messenger.write(f"{targ_lin_vel},{targ_ang_vel}\n".encode("utf-8"))
