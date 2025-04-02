@@ -14,14 +14,21 @@ class Homer8OdomNode(Node):
         # Config serial port
         self.pico_messenger = Serial("/dev/ttyACM0", 115200)
         self.pico_receiver_timer = self.create_timer(0.015, self.receive_pico_message)
+        self.real_lin_vel = 0.0
+        self.real_ang_vel = 0.0
         # Config publishers and subscribers
 
     def receive_pico_message(self):
-        if self.pico_messenger.in_waiting() > 0:
-            real_vel = (
-                self.pico_messenger.readline().decode("urf-8").rstrip().split(",")
+        if self.pico_messenger.inWaiting() > 0:
+            real_vels = (
+                self.pico_messenger.readline().decode("utf-8").rstrip().split(",")
             )
-        self.get_logger().info(f"HomeR's actual velocity measured as: {real_vel}.")
+            if len(real_vels) == 2:
+                self.real_lin_vel = real_vels[0]
+                self.real_ang_vel = real_vels[1]
+            self.get_logger().debug(
+                f"actual velocity measured \n---\nlinear: {self.real_lin_vel}, angular: {self.real_ang_vel}"
+            )
 
 
 def main():
