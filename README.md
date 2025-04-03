@@ -1,4 +1,4 @@
-# Figure 8 Turtlesim
+# Odometry for HomeR
 ## Objectives
 - Get familiar with ROS concepts, such as [node](https://docs.ros.org/en/jazzy/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Nodes/Understanding-ROS2-Nodes.html) and 
 [topic](https://docs.ros.org/en/jazzy/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.html).
@@ -44,7 +44,7 @@
    
    You need to determine the **linear velocity** and `/turtle1/cmd_vel` topic **publish rate** to regulate the turtle's motion.
    
-   ![example_fig8](turtlesim_play_pkg/images/example_fig8.gif)
+   ![example_fig8](turtlesim_play_pkg/images/homer8_demo.gif)
 
 3. (10%) Let the turtle complete at least five laps then upload your figure 8 to the [images/](turtlesim_play_pkg/images/) directory.
    Illustrate Your turtle's execution below (edit next line in this [README](README.md)):
