@@ -2,19 +2,24 @@
 ## Objectives
 - Practice [transformation broadcasting](https://docs.ros.org/en/jazzy/Tutorials/Intermediate/Tf2/Writing-A-Tf2-Broadcaster-Py.html)
 - Review ROS [node](https://docs.ros.org/en/jazzy/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Nodes/Understanding-ROS2-Nodes.html)
-- Review [topic](https://docs.ros.org/en/jazzy/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.html).
-- Review Manage a ROS [package](https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Creating-Your-First-ROS2-Package.html) with an [executable](https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html).
+- Review ROS [topic](https://docs.ros.org/en/jazzy/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.html).
+- Review ROS [package](https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Creating-Your-First-ROS2-Package.html) and [executable](https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html).
 
 ## Pre-requisite
-Upload MicroPython scripts to your pico board so that your robot is driven by a apt PID controller.
-Feel free to use sample code from [HomeR](https://github.com/linzhangUCA/homer/tree/2425/homer_control/pico_scripts).
+- Setup motor control interface on the Pico board.
+So, the Pico is 
+1. transmitting the robot's actual velocity in real time.
+2. receiving target velocity commands for the robot.
+3. regulate the robot's motion refer to the target velocity with a PID controller. 
 
-## Requirements: 
-1. (5%) Download and build the ROS package. 
+   > Feel free to use the sample scripts from [HomeR](https://github.com/linzhangUCA/homer/tree/2425/homer_control/pico_scripts).
+
+- Download and build the assignment package. 
    1. (Optional) [Create a ROS workspace](https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html#create-a-new-directory). 
    2. Clone this repository down to the `/src` dirctory in your ROS workspace, then `colcon build`.
 
-2. (58%) Complete the [odom_talker.py](homer8_odom_pkg/homer8_odom_pkg/odom_talker.py).
+## Requirements: 
+1. (58%) Complete the [odom_talker.py](homer8_odom_pkg/homer8_odom_pkg/odom_talker.py).
    Fill code between the commented lines:
    ```python
    ### START CODING HERE ###
@@ -32,12 +37,12 @@ Feel free to use sample code from [HomeR](https://github.com/linzhangUCA/homer/t
    
 
 
-3. (10%) Let the turtle complete at least five laps then upload your figure 8 to the [images/](/images/) directory.
+2. (10%) Let the turtle complete at least five laps then upload your figure 8 to the [images/](/images/) directory.
    Illustrate Your turtle's execution below (edit next line in this [README](README.md)):
    
    ![fig8_practice](turtlesim_play_pkg/images/fig8_practice.png)
    
-4. (5%) Fill the `<description>`, `<maintainer>`, `<maintainer_email>` fields with your own information in [package.xml](turtlesim_play_pkg/package.xml) and [setup.py](turtlesim_play_pkg/setup.py).
+3. (5%) Fill the `<description>`, `<maintainer>`, `<maintainer_email>` fields with your own information in [package.xml](turtlesim_play_pkg/package.xml) and [setup.py](turtlesim_play_pkg/setup.py).
 Look for the fields marked with `TODO` in these files.
 
 ### Hints
