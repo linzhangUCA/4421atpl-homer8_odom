@@ -8,15 +8,36 @@
 ## Pre-requisite
 - Setup motor control interface on the Pico board.
 So, the Pico is 
-1. transmitting the robot's actual velocity in real time.
-2. receiving target velocity commands for the robot.
-3. regulate the robot's motion refer to the target velocity with a PID controller. 
-
-   > Feel free to use the sample scripts from [HomeR](https://github.com/linzhangUCA/homer/tree/2425/homer_control/pico_scripts).
+   1. transmitting the robot's actual velocity in real time.
+   2. receiving target velocity commands for the robot.
+   3. regulate the robot's motion refer to the target velocity with a PID controller. 
+   
+  > Feel free to use the sample scripts from [HomeR](https://github.com/linzhangUCA/homer/tree/2425/homer_control/pico_scripts).
 
 - Download and build the assignment package. 
    1. (Optional) [Create a ROS workspace](https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html#create-a-new-directory). 
    2. Clone this repository down to the `/src` dirctory in your ROS workspace, then `colcon build`.
+      1. Open a terminal window and run following commands:
+         ```console
+         cd <ros workspace path>
+         colcon build --packages-select homer8_odom_pkg
+         source install/local_setup.bash  # CRITICAL, or ROS can't find your package
+         ```
+      2. Start the `turtlesim`
+         ```console
+         ros2 run turtlesim turtlesim_node
+         ```
+      3. Run executable `paint_8` in another terminal
+         ```console
+         source <ros workspace path>/install/local_setup.bash
+         ros2 run homer8_odom_pkg paint_8
+         ```
+         > The robot will wait 5 seconds before moving.
+
+  ![homer8_demo](/images/homer8_demo.gif)
+
+  The velocity commands to drive the robot is predefined in [homer_figure8.py](homer8_odom_pkg/homer8_odom_pkg/homer_figure8.py).
+  The robot is supposed to paint a figure 8 on its movable plane, but you'll observe the deviance between theory and reality.
 
 ## Requirements: 
 1. (85%) Complete the [odom_talker.py](homer8_odom_pkg/homer8_odom_pkg/odom_talker.py).
@@ -45,28 +66,6 @@ Look for the fields marked with `TODO` in these files.
 - To calculate updated pose for the robot, please review [Assignment 3](https://classroom.github.com/a/R9LNWs9-).
 
 - Please refer to the [official tutorial](https://docs.ros.org/en/jazzy/Tutorials/Intermediate/Tf2/Writing-A-Tf2-Broadcaster-Py.html) or the [in-class example](https://github.com/linzhangUCA/4421example_tf) to get a better idea on how to broadcast transformations in ROS.
-
-- Build `homer8_odom_pkg` package.
-  1. Open a terminal window and run following commands:
-   ```console
-   cd <ros workspace path>
-   colcon build --packages-select homer8_odom_pkg
-   source install/local_setup.bash  # CRITICAL, or ROS can't find your package
-   ```
-  2. Start the `turtlesim`
-   ```console
-   ros2 run turtlesim turtlesim_node
-   ```
-  3. Run executable `paint_8` in another terminal
-   ```console
-   source <ros workspace path>/install/local_setup.bash
-   ros2 run homer8_odom_pkg paint_8
-   ```
-
-  ![homer8_demo](/images/homer8_demo.gif)
-
-  The velocity commands to drive the robot is predefined in [homer_figure8.py](homer8_odom_pkg/homer8_odom_pkg/homer_figure8.py).
-  The robot is supposed to paint a figure 8 on its movable plane, but you'll observe the deviance between theory and reality.
    
 - `turtlesim` is used to visualize the robot's trajectory in this assignment.
   We'll read the robot's actual velocity from the Pico, fill it to the `Twist` message then publish to`/turtle1/cmd_vel` topic.
