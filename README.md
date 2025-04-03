@@ -42,30 +42,32 @@ Look for the fields marked with `TODO` in these files.
 
 ### Hints
 - Build `homer8_odom_pkg` package.
-      **NOTE**: you need to specify `<ros workspace path>` according to the 1st step.
-      Verify if your package was downloaded to the right location and was successfully built.
-      1. Open a terminal window and run following commands:
-      ```console
-      cd <ros workspace path>
-      colcon build --packages-select homer8_odom_pkg
-      source install/local_setup.bash  # CRITICAL, or ROS can't find your package
-      ```   
-      2. Open a terminal, start the `turtlesim`
-      ```console
-      ros2 run turtlesim turtlesim_node
-      ```
-      3. Sanity check: run executable `paint_8` in another terminal
-      ```console
-      source <ros workspace path>/install/local_setup.bash
-      ros2 run homer8_odom_pkg paint_8
-      ```
-   In case of mistakes, you'll want to start over. Remove the entire ROS workspace using command: `rm -rf <ros workspace path>`
+  1. Open a terminal window and run following commands:
+   ```console
+   cd <ros workspace path>
+   colcon build --packages-select homer8_odom_pkg
+   source install/local_setup.bash  # CRITICAL, or ROS can't find your package
+   ```
+  2. Start the `turtlesim`
+   ```console
+   ros2 run turtlesim turtlesim_node
+   ```
+  3. Run executable `paint_8` in another terminal
+   ```console
+   source <ros workspace path>/install/local_setup.bash
+   ros2 run homer8_odom_pkg paint_8
+   ```
+
+  ![homer8_demo](/images/homer8_demo.gif)
+
+  The velocity commands to drive the robot is predefined in [homer_figure8.py](homer8_odom_pkg/homer8_odom_pkg/homer_figure8.py).
+  The robot is supposed to paint a figure 8 on its movable plane, but you'll observe the deviance between theory and reality.
    
-- We'll borrow `turtlesim` to better visualize the robot's trajectory.
-  Thus, the robot's actual velocity will be filled to the `Twist` message then published to`/turtle1/cmd_vel` topic.
-  An example is as below.
+- `turtlesim` is used to visualize the robot's trajectory in this assignment.
+  We'll read the robot's actual velocity from the Pico, fill it to the `Twist` message then publish to`/turtle1/cmd_vel` topic.
+  Check [homer_figure8.py](homer8_odom_pkg/homer8_odom_pkg/homer_figure8.py) for a detailed management.
    
-   ![homer8_demo](/images/homer8_demo.gif)
+
    
 ## Study Resources
 
