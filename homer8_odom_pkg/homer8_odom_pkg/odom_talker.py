@@ -7,7 +7,7 @@ from nav_msgs.msg import Odometry
 from tf_transformations import quaternion_from_euler
 from math import sin, cos, pi
 
-from homer_figure8 import Homer8Node
+from homer8_odom_pkg.homer_figure8 import Homer8Node
 
 
 class OdomAnnouncerNode(Homer8Node):
