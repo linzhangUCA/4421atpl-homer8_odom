@@ -5,6 +5,10 @@
 - Review [topic](https://docs.ros.org/en/jazzy/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.html).
 - Review Manage a ROS [package](https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Creating-Your-First-ROS2-Package.html) with an [executable](https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html).
 
+## Pre-requisite
+Upload MicroPython scripts to your pico board so that your robot is driven by a apt PID controller.
+Feel free to use sample code from [HomeR](https://github.com/linzhangUCA/homer/tree/2425/homer_control/pico_scripts).
+
 ## Requirements: 
 1. (5%) Download and build the ROS package. 
    1. (Optional) [Create a ROS workspace](https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html#create-a-new-directory). 
@@ -22,10 +26,10 @@
       ```console
       ros2 run turtlesim turtlesim_node
       ```
-      3. Sanity check: run executable `paint8` in another terminal
+      3. Sanity check: run executable `paint_8` in another terminal
       ```console
       source <ros workspace path>/install/local_setup.bash
-      ros2 run homer8_odom_pkg paint8
+      ros2 run homer8_odom_pkg paint_8
       ```
    In case of mistakes, you'll want to start over. Remove the entire ROS workspace using command: `rm -rf <ros workspace path>`
 2. (80%) Complete the [figure8_node.py](turtlesim_play_pkg/turtlesim_play_pkg/figure8_node.py).
