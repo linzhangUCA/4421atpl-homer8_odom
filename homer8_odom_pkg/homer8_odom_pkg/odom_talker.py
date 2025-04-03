@@ -14,16 +14,12 @@ class Homer8OdomNode(Node):
         super().__init__("homer8_odom_talker_node")
         # Init serial port
         self.pico_messenger = Serial("/dev/ttyACM0", 115200)
-        self.pico_interact_timer = self.create_timer(0.05, self.talk_listen_pico)
+        self.pico_interact_timer = self.create_timer(0.02, self.talk_listen_pico)
         self.real_lin_vel = 0.0
         self.real_ang_vel = 0.0
-        # # Init \cmd_vel subscriber
-        # self.target_vel_subscriber = self.create_subscription(
-        #     topic="cmd_vel",
-        #     msg_type=Twist,
-        #     callback=self.send_pico_target_vel,
-        #     qos_profile=1,
-        # )
+        # Init cmd_vel publisher for turtle1
+        self.turtle_cmd_publisher = self.create_publisher(Twist, "turtle1/cmd_vel", 1)
+        self.turtle_cmd_pub_timer = self.create_timer(0.02, self.order_turtle)
         ### START CODEING HERE ### ~? lines
         # Init \odom publisher and tf broadcaster `odom` -> `base_link`
         self.odom_publisher = self.create_publisher(
@@ -46,18 +42,18 @@ class Homer8OdomNode(Node):
 
     def talk_listen_pico(self):
         # Talk target velocity to pico
-        if self.circle_counter <= 80:
+        if 300 < self.circle_counter <= 500:
             targ_lin_vel = pi / 8
             targ_ang_vel = -pi / 2
-        elif 80 < self.circle_counter <= 160:
+        elif 500 < self.circle_counter <= 750:
             targ_lin_vel = pi / 7
             targ_ang_vel = pi / 2
-        elif self.circle_counter > 160:
+        else:
             targ_lin_vel = 0.0
             targ_ang_vel = 0.0
         self.pico_messenger.write(f"{targ_lin_vel},{targ_ang_vel}\n".encode("utf-8"))
         self.circle_counter += 1
-        self.get_logger().info(
+        self.get_logger().debug(
             f"target velocity set \n---\nlinear: {targ_lin_vel}, angular: {targ_ang_vel}"
         )
         # Listen real velocity from pico
@@ -66,13 +62,26 @@ class Homer8OdomNode(Node):
                 self.pico_messenger.readline().decode("utf-8").rstrip().split(",")
             )
             if len(real_vels) == 2:
-                self.real_lin_vel = float(real_vels[0])
-                self.real_ang_vel = float(real_vels[1])
-                self.get_logger().info(
+                try:
+                    (self.real_lin_vel, self.real_ang_vel) = tuple(
+                        map(float, real_vels)
+                    )
+                except ValueError:
+                    pass
+                # self.real_lin_vel = float(real_vels[0])
+                # self.real_ang_vel = float(real_vels[1])
+                self.get_logger().debug(
                     f"actual velocity measured \n---\nlinear: {self.real_lin_vel}, angular: {self.real_ang_vel}"
                 )
             else:
                 self.get_logger().warn("Pico message decoding ABNORMAL!")
+
+    def order_turtle(self):
+        twist_msg = Twist()
+        twist_msg.linear.x = self.real_lin_vel * 4
+        twist_msg.angular.z = self.real_ang_vel
+        self.turtle_cmd_publisher.publish(twist_msg)
+        self.get_logger().info(f"velocity command for turtle: \n{twist_msg}")
 
     # def send_pico_target_vel(self, cmd_vel_msg):
     #     targ_linv = cmd_vel_msg.linear.x
