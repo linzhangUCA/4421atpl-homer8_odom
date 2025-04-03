@@ -53,10 +53,10 @@ So, the Pico is
      - a timer running at 50 Hz with `announce_odometry` to be its callback function.
    - (10%) Correctly compute the HomeR's pose at each instance.
    - (30%) Correctly format `Odometry` message and **publish** it under the `/odom`.
-   - (30%) Correctly format `TransformStamped` message and **broadcast** this transform.
+   - (30%) Correctly format `TransformStamped` message and **broadcast** transformation from `odom` frame to `base_link` frame.
    
 2. (10%) Take a screenshot with the turtlesim canvas showing turtle1's trajectory and Rviz world displaying `odom` and `base_link` frames. 
-   upload your figure 8 to the [images/](images/) directory.
+   upload your screenshot to the [images/](images/) directory.
    Name the file [odom_screenshot.png](images/odom_screenshot.png).
    
 3. (5%) Fill the `<description>`, `<maintainer>`, `<maintainer_email>` fields with your own information in [package.xml](homer8_odom_pkg/package.xml) and [setup.py](homer8_odom_pkg/setup.py).
