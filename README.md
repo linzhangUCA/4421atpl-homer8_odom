@@ -19,33 +19,33 @@ So, the Pico is
    2. Clone this repository down to the `/src` dirctory in your ROS workspace, then `colcon build`.
 
 ## Requirements: 
-1. (58%) Complete the [odom_talker.py](homer8_odom_pkg/homer8_odom_pkg/odom_talker.py).
+1. (85%) Complete the [odom_talker.py](homer8_odom_pkg/homer8_odom_pkg/odom_talker.py).
    Fill code between the commented lines:
    ```python
    ### START CODING HERE ###
 
    ### END CODING HERE ###
    ```
-   - (9%) Correctly initialize:
+   - (15%) Correctly initialize:
      - a `/odom` topic publisher
      - a tf broadcaster for transform between `odom` frame and `base_link` frame.
      - a timer running at 50 Hz with `announce_odometry` to be its callback function.
-   - (9%) Correctly compute the HomeR's pose at each instance.
-   - (20%) Correctly format `Odometry` message and **publish** it under the `/odom`.
-   - (20%) Correctly format `TransformStamped` message and **broadcast** this transform.
-   - HomeR's actual velocity is stored in `self.real_lin_vel` and `self.real_ang_vel`.
+   - (10%) Correctly compute the HomeR's pose at each instance.
+   - (30%) Correctly format `Odometry` message and **publish** it under the `/odom`.
+   - (30%) Correctly format `TransformStamped` message and **broadcast** this transform.
    
-
-
-2. (10%) Let the turtle complete at least five laps then upload your figure 8 to the [images/](/images/) directory.
-   Illustrate Your turtle's execution below (edit next line in this [README](README.md)):
+2. (10%) Take a screenshot with the turtlesim canvas showing turtle1's trajectory and Rviz world displaying `odom` and `base_link` frames. 
+   upload your figure 8 to the [images/](images/) directory.
+   Name the file [odom_screenshot.png](images/odom_screenshot.png).
    
-   ![fig8_practice](turtlesim_play_pkg/images/fig8_practice.png)
-   
-3. (5%) Fill the `<description>`, `<maintainer>`, `<maintainer_email>` fields with your own information in [package.xml](turtlesim_play_pkg/package.xml) and [setup.py](turtlesim_play_pkg/setup.py).
+3. (5%) Fill the `<description>`, `<maintainer>`, `<maintainer_email>` fields with your own information in [package.xml](homer8_odom_pkg/package.xml) and [setup.py](homer8_odom_pkg/setup.py).
 Look for the fields marked with `TODO` in these files.
 
 ### Hints
+- To calculate updated pose for the robot, please review [Assignment 3](https://classroom.github.com/a/R9LNWs9-).
+
+- Please refer to the [official tutorial](https://docs.ros.org/en/jazzy/Tutorials/Intermediate/Tf2/Writing-A-Tf2-Broadcaster-Py.html) or the [in-class example](https://github.com/linzhangUCA/4421example_tf) to get a better idea on how to broadcast transformations in ROS.
+
 - Build `homer8_odom_pkg` package.
   1. Open a terminal window and run following commands:
    ```console
@@ -71,11 +71,31 @@ Look for the fields marked with `TODO` in these files.
 - `turtlesim` is used to visualize the robot's trajectory in this assignment.
   We'll read the robot's actual velocity from the Pico, fill it to the `Twist` message then publish to`/turtle1/cmd_vel` topic.
   Check [homer_figure8.py](homer8_odom_pkg/homer8_odom_pkg/homer_figure8.py) for a detailed management.
-   
 
-   
-## Study Resources
+- The robot's real-time actual velocity is stored in `self.real_lin_vel` and `self.real_ang_vel`.
+  They are extracted in the `talk_listen_pico()` function in [homer_figure8.py](homer8_odom_pkg/homer8_odom_pkg/homer_figure8.py)
+  ```python
+    if self.pico_messenger.inWaiting() > 0:
+      real_vels = (
+          self.pico_messenger.readline().decode("utf-8").rstrip().split(",")
+      )
+      if len(real_vels) == 2:
+          try:
+              (self.real_lin_vel, self.real_ang_vel) = tuple(
+                  map(float, real_vels)
+              )
+          except ValueError:
+              pass
+  ```
 
+- Use **Rviz** to verify your odometry setup
+  1. Start `rviz2` in terminal
+  2. In "Displays" panel, change "Fixed Frame" to **odom**.
+  3. Add "TF" to the "Displays" panel, and "Show Names"
+
+## Turtle and Frames
+
+![homer8_screenshot](images/odom_screenshot.png)
 
 ## AI Policies
 Please acknowledge AI's contributions according to the policies in the [syllabus](https://linzhanguca.github.io/_docs/robotics2-2025/syllabus.pdf).
