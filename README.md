@@ -49,9 +49,7 @@ Feel free to use sample code from [HomeR](https://github.com/linzhangUCA/homer/t
    - (20%) Correctly format `TransformStamped` message and **broadcast** this transform.
    - HomeR's actual velocity is stored in `self.real_lin_vel` and `self.real_ang_vel`.
    
-   You need to determine the **linear velocity** and `/turtle1/cmd_vel` topic **publish rate** to regulate the turtle's motion.
-   
-   ![homer8_demo](/images/homer8_demo.gif)
+
 
 4. (10%) Let the turtle complete at least five laps then upload your figure 8 to the [images/](/images/) directory.
    Illustrate Your turtle's execution below (edit next line in this [README](README.md)):
@@ -61,6 +59,12 @@ Feel free to use sample code from [HomeR](https://github.com/linzhangUCA/homer/t
 5. (5%) Fill the `<description>`, `<maintainer>`, `<maintainer_email>` fields with your own information in [package.xml](turtlesim_play_pkg/package.xml) and [setup.py](turtlesim_play_pkg/setup.py).
 Look for the fields marked with `TODO` in these files.
 
+## Hints
+  We'll borrow `turtlesim` to better visualize the robot's trajectory.
+  Thus, the robot's actual velocity will be filled to the `Twist` message then published to`/turtle1/cmd_vel` topic.
+  An example is as below.
+   
+   ![homer8_demo](/images/homer8_demo.gif)
 ## Study Resources
 
 
