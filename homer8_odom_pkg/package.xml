@@ -4,8 +4,8 @@
   <name>homer8_odom_pkg</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="linzhank@gmail.com">pbd0</maintainer>
-  <license>TODO: License declaration</license>
+  <maintainer email="TODO@todo.todo">TODO</maintainer>
+  <license>GPLv3</license>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

@@ -15,7 +15,7 @@ setup(
     maintainer="TODO",
     maintainer_email="TODO@todo.todo",
     description="TODO: Package description",
-    license="TODO: License declaration",
+    license="GPLv3",
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
