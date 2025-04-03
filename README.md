@@ -32,24 +32,28 @@ Feel free to use sample code from [HomeR](https://github.com/linzhangUCA/homer/t
       ros2 run homer8_odom_pkg paint_8
       ```
    In case of mistakes, you'll want to start over. Remove the entire ROS workspace using command: `rm -rf <ros workspace path>`
-2. (80%) Complete the [figure8_node.py](turtlesim_play_pkg/turtlesim_play_pkg/figure8_node.py).
-   Fill approriate operations between the commented lines:
+   
+3. (58%) Complete the [odom_talker.py](homer8_odom_pkg/homer8_odom_pkg/odom_talker.py).
+   Fill code between the commented lines:
    ```python
    ### START CODING HERE ###
 
    ### END CODING HERE ###
    ```
-   - (20%) The turtle is expected to leave **identical** figure 8 trjectories from lap to lap.
-   - (20%) The turtle's trajectory (figure 8) needs to be **inscribed** within the two squares (See image below for an example).
-   - (20%) The turtle is supposed to draw the top circle couterclockwisely with a **radius of 1**.
-   - (20%) The turtle is supposed to draw the bottom circle clockwisely with a **radius of 2**.
-   - The **angular speed** of the turtle has to be fixed at **$$\frac{\pi}{4}$$ rad/s**.
+   - (9%) Correctly initialize:
+     - a `/odom` topic publisher
+     - a tf broadcaster for transform between `odom` frame and `base_link` frame.
+     - a timer running at 50 Hz with `announce_odometry` to be its callback function.
+   - (9%) Correctly compute the HomeR's pose at each instance.
+   - (20%) Correctly format `Odometry` message and **publish** it under the `/odom`.
+   - (20%) Correctly format `TransformStamped` message and **broadcast** this transform.
+   - HomeR's actual velocity is stored in `self.real_lin_vel` and `self.real_ang_vel`.
    
    You need to determine the **linear velocity** and `/turtle1/cmd_vel` topic **publish rate** to regulate the turtle's motion.
    
    ![homer8_demo](/images/homer8_demo.gif)
 
-3. (10%) Let the turtle complete at least five laps then upload your figure 8 to the [images/](/images/) directory.
+4. (10%) Let the turtle complete at least five laps then upload your figure 8 to the [images/](/images/) directory.
    Illustrate Your turtle's execution below (edit next line in this [README](README.md)):
    
    ![fig8_practice](turtlesim_play_pkg/images/fig8_practice.png)
@@ -59,14 +63,6 @@ Look for the fields marked with `TODO` in these files.
 
 ## Study Resources
 
-### Circular Motion Kinematics
-Given an object is doing the circular motion in constant linear/angular velocity. 
-The relationship between the linear and angular velocity is shown as the following figure, where $$r$$ is the radius of the circle.
-
-![lin_ang_vel](https://yairshinar.com/wp-content/uploads/2018/12/c99655fa7435cc516bb40ac7daaa51c9.jpg)
-
-### Linux Command Line Tutorial
-[https://ubuntu.com/tutorials/command-line-for-beginners#1-overview](https://ubuntu.com/tutorials/command-line-for-beginners#1-overview)
 
 ## AI Policies
 Please acknowledge AI's contributions according to the policies in the [syllabus](https://linzhanguca.github.io/_docs/robotics2-2025/syllabus.pdf).
