@@ -7,26 +7,25 @@
 
 ## Requirements: 
 1. (5%) Download and build the ROS package. 
-   1. [Create a ROS workspace](https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html#create-a-new-directory).
+   1. (Optional) [Create a ROS workspace](https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html#create-a-new-directory). 
    2. Clone this repository down to the `/src` dirctory in your ROS workspace.
-   3. Build `turtlesim_play_pkg` package.
+   3. Build `homer8_odom_pkg` package.
       **NOTE**: you need to specify `<ros workspace path>` according to the 1st step.
       Verify if your package was downloaded to the right location and was successfully built.
       1. Open a terminal window and run following commands:
       ```console
       cd <ros workspace path>
-      colcon build
+      colcon build --packages-select homer8_odom_pkg
       source install/local_setup.bash  # CRITICAL, or ROS can't find your package
       ```   
-      2. Start `turtlesim_node` in a terminal
+      2. Open a terminal, start the `turtlesim`
       ```console
-      source <ros workspace path>/install/local_setup.bash
       ros2 run turtlesim turtlesim_node
       ```
-      3. Open another terminal, start the `figure8_node`
+      3. Sanity check: run executable `paint8` in another terminal
       ```console
       source <ros workspace path>/install/local_setup.bash
-      ros2 run turtlesim_play_pkg figure8_node
+      ros2 run homer8_odom_pkg paint8
       ```
    In case of mistakes, you'll want to start over. Remove the entire ROS workspace using command: `rm -rf <ros workspace path>`
 2. (80%) Complete the [figure8_node.py](turtlesim_play_pkg/turtlesim_play_pkg/figure8_node.py).
