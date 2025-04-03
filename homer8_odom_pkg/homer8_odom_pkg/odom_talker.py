@@ -4,22 +4,16 @@ from tf2_ros import TransformBroadcaster
 from geometry_msgs.msg import Twist, TransformStamped
 from nav_msgs.msg import Odometry
 
-from serial import Serial
 from tf_transformations import quaternion_from_euler
 from math import sin, cos, pi
 
+from homer_figure8 import Homer8Node
 
-class Homer8OdomNode(Node):
+
+class OdomAnnouncerNode(Homer8Node):
     def __init__(self):
-        super().__init__("homer8_odom_talker_node")
+        super().__init__()
         # Init serial port
-        self.pico_messenger = Serial("/dev/ttyACM0", 115200)
-        self.pico_interact_timer = self.create_timer(0.02, self.talk_listen_pico)
-        self.real_lin_vel = 0.0
-        self.real_ang_vel = 0.0
-        # Init cmd_vel publisher for turtle1
-        self.turtle_cmd_publisher = self.create_publisher(Twist, "turtle1/cmd_vel", 1)
-        self.turtle_cmd_pub_timer = self.create_timer(0.02, self.order_turtle)
         ### START CODEING HERE ### ~? lines
         # Init \odom publisher and tf broadcaster `odom` -> `base_link`
         self.odom_publisher = self.create_publisher(
@@ -38,58 +32,7 @@ class Homer8OdomNode(Node):
         self.curr_ts = self.get_clock().now()
         self.circle_counter = 0
         self.reverse_circle = False
-        self.get_logger().info("HomeR is awaken.")
-
-    def talk_listen_pico(self):
-        # Talk target velocity to pico
-        if 300 < self.circle_counter <= 500:
-            targ_lin_vel = pi / 8
-            targ_ang_vel = -pi / 2
-        elif 500 < self.circle_counter <= 750:
-            targ_lin_vel = pi / 7
-            targ_ang_vel = pi / 2
-        else:
-            targ_lin_vel = 0.0
-            targ_ang_vel = 0.0
-        self.pico_messenger.write(f"{targ_lin_vel},{targ_ang_vel}\n".encode("utf-8"))
-        self.circle_counter += 1
-        self.get_logger().debug(
-            f"target velocity set \n---\nlinear: {targ_lin_vel}, angular: {targ_ang_vel}"
-        )
-        # Listen real velocity from pico
-        if self.pico_messenger.inWaiting() > 0:
-            real_vels = (
-                self.pico_messenger.readline().decode("utf-8").rstrip().split(",")
-            )
-            if len(real_vels) == 2:
-                try:
-                    (self.real_lin_vel, self.real_ang_vel) = tuple(
-                        map(float, real_vels)
-                    )
-                except ValueError:
-                    pass
-                # self.real_lin_vel = float(real_vels[0])
-                # self.real_ang_vel = float(real_vels[1])
-                self.get_logger().debug(
-                    f"actual velocity measured \n---\nlinear: {self.real_lin_vel}, angular: {self.real_ang_vel}"
-                )
-            else:
-                self.get_logger().warn("Pico message decoding ABNORMAL!")
-
-    def order_turtle(self):
-        twist_msg = Twist()
-        twist_msg.linear.x = self.real_lin_vel * 4
-        twist_msg.angular.z = self.real_ang_vel
-        self.turtle_cmd_publisher.publish(twist_msg)
-        self.get_logger().info(f"velocity command for turtle: \n{twist_msg}")
-
-    # def send_pico_target_vel(self, cmd_vel_msg):
-    #     targ_linv = cmd_vel_msg.linear.x
-    #     targ_angv = cmd_vel_msg.angular.z
-    #     self.pico_messenger.write(f"{targ_linv},{targ_angv}\n".encode("utf-8"))
-    #     self.get_logger().info(
-    #         f"target velocity set \n---\nlinear: {targ_linv}, angular: {targ_angv}"
-    #     )
+        self.get_logger().info("Odometry is ready.")
 
     def announce_odometry(self):
         # Calculate time and pose change
@@ -135,9 +78,9 @@ class Homer8OdomNode(Node):
 
 def main():
     rclpy.init()
-    homer8_node = Homer8OdomNode()
-    rclpy.spin(homer8_node)
-    homer8_node.destroy_node()
+    odom_node = OdomAnnouncerNode()
+    rclpy.spin(odom_node)
+    odom_node.destroy_node()
     rclpy.shutdown()
 
 
