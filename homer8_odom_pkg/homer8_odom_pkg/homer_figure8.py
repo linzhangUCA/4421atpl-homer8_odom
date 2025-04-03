@@ -50,11 +50,12 @@ class Homer8Node(Node):
                 self.get_logger().debug(
                     f"actual velocity measured \n---\nlinear: {self.real_lin_vel}, angular: {self.real_ang_vel}"
                 )
+                # Drive turtle1
                 twist_msg = Twist()
                 twist_msg.linear.x = self.real_lin_vel * 4
                 twist_msg.angular.z = self.real_ang_vel
                 self.turtle_cmd_publisher.publish(twist_msg)
-                self.get_logger().info(f"velocity command for turtle: \n{twist_msg}")
+                self.get_logger().debug(f"velocity command for turtle: \n{twist_msg}")
             else:
                 self.get_logger().warn("Pico message decoding ABNORMAL!")
 
