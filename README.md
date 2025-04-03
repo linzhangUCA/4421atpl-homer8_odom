@@ -10,7 +10,7 @@
 So, the Pico is 
    1. transmitting the robot's actual velocity in real time.
    2. receiving target velocity commands for the robot.
-   3. regulate the robot's motion refer to the target velocity with a PID controller. 
+   3. regulate the robot's motion with a PID controller refering to the target velocity commands. 
    
   > Feel free to use the sample scripts from [HomeR](https://github.com/linzhangUCA/homer/tree/2425/homer_control/pico_scripts).
 
